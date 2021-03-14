@@ -1,3 +1,4 @@
+#ignore below pattern,  with exceptions
 *.DS_Store
 *.sw?
 .#*
@@ -9,6 +10,7 @@
 bin
 build
 target
+!target/*.jar
 dependency-reduced-pom.xml
 *.sublime-*
 /scratch
