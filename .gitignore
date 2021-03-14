@@ -1,4 +1,4 @@
-#ignore below pattern,  with exceptions
+#ignore pattern: https://linuxize.com/post/gitignore-ignoring-files-in-git/
 *.DS_Store
 *.sw?
 .#*
@@ -9,8 +9,8 @@
 .settings
 bin
 build
-target
-!target/*.jar
+#ignore all subfolders, but not the files under
+**/target/*/
 dependency-reduced-pom.xml
 *.sublime-*
 /scratch
