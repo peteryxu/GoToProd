@@ -21,7 +21,7 @@ public class HelloController {
         logger.warn("A WARN Message");
         logger.error("An ERROR Message");
         		
-		return "Greetings from Spring Boot!";
+		return "Greetings from Spring Boot! Started feature-rest on March 11th";
 	}
 
 }
