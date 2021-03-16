@@ -1,0 +1,12 @@
+demo:
+  environment: prod
+  hosts:
+    - https://www.example1.com
+    - https://www.example2.com
+logging:
+  pattern:
+    console: "%msg%n"
+  level:
+    org.springframework.web: INFO
+    guru.springframework.controllers: INFO
+    org.hibernate: INFO
