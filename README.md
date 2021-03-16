@@ -1,14 +1,43 @@
-# clean, package, run
+# local machine: daily development: clean, package, run, test
 cd complete
 
 ./mvnw clean
 ./mvnw package 
 ./mvnw spring-boot:run
+
+suppress maven message:
+./mvnw -q spring-boot:run
+
 or
-java -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=local -jar target/spring-boot-0.0.1-SNAPSHOT.jar
 
 http://localhost:8080/
 
+# push to OCP px-dev project directly & Test, not from docker images
+
+complete % oc login --token=sha256~sJFwwXnHyAbkyqGNbuD9QE60DLvcUaF9-jD4Zf1pEzY --server=https://c104-e.us-east.containers.cloud.ibm.com:30729
+Logged into "https://c104-e.us-east.containers.cloud.ibm.com:30729" as "IAM#peteryxu@us.ibm.com" using the token provided.
+
+You have access to 73 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "px-dev".
+complete % export USER=peteryxu
+complete % odo push            
+ ✓  Waiting for component to start [49ms]
+
+Validation
+ ✓  Validating the devfile [135614ns]
+
+# Test on OCP px-dev,  if working correct, commit to the feature branch:
+git branch
+git status
+git 
+# Spring profiles for different ENVs
+https://www.baeldung.com/spring-profiles
+In Spring Boot, it picks .properties or .yaml files in the following sequences:
+
+application-{profile}.{properties|yml}
+application.{properties|yml}
 
 # Quality Train: Moving a Spring App to Production
 https://spring.io/guides/gs/spring-boot/
@@ -112,3 +141,5 @@ docker run -p 8080:8080 springio/gs-spring-boot-docker
 http://www.mastertheboss.com/jboss-frameworks/spring/deploy-your-springboot-applications-on-openshift
 
 oc new-app registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift~https://github.com/fmarchioni/masterspringboot.git --context-dir=demo-docker --name=springboot-demo-docker
+
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" />
+    <springProperty scope="context" name="APP_ENV" source="spring.profiles.active" />
+
+    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <sequence></sequence>
+                <pattern>
+                    <pattern>{ "application": "${APP_NAME}", "environment": "${APP_ENV}", "host": "${HOSTNAME}" }</pattern>
+                </pattern>
+                <mdc />
+                <message />
+                <callerData>
+                    <fieldName>caller</fieldName>
+                    <classFieldName>class</classFieldName>
+                    <methodFieldName>method</methodFieldName>
+                    <fileFieldName>file</fileFieldName>
+                    <lineFieldName>line</lineFieldName>
+                </callerData>
+                <stackTrace>
+                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                        <maxDepthPerThrowable>20</maxDepthPerThrowable>
+                        <maxLength>1000</maxLength>
+                        <shortenedClassNameLength>30</shortenedClassNameLength>
+                        <rootCauseFirst>true</rootCauseFirst>
+                        <exclusions>excluded1,excluded2</exclusions>
+                        <inlineHash>true</inlineHash>
+                    </throwableConverter>
+                </stackTrace>
+                <logLevel />
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+                <tags />
+                <logstashMarkers />
+                <arguments>
+                    <includeNonStructuredArguments>true</includeNonStructuredArguments>
+                    <nonStructuredArgumentsFieldPrefix>prefix</nonStructuredArgumentsFieldPrefix>
+                </arguments>
+                <throwableClassName />
+                <throwableRootCauseClassName>
+                    <useSimpleClassName>false</useSimpleClassName>
+                </throwableRootCauseClassName>
+            </providers>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" additivity="false"/>
+    <logger name="org.springframework" level="ERROR" additivity="false"/>
+    <logger name="org.apache.kafka" level="ERROR" additivity="false"/>
+    <logger name="com.example" level="DEBUG"/>
+
+    <root level="INFO">
+        <springProfile name="local">
+            <appender-ref ref="CONSOLE" />
+        </springProfile>
+        <springProfile name="!local">
+            <appender-ref ref="CONSOLE_JSON" />
+        </springProfile>
+    </root>
+</configuration>
